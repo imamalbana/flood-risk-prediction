@@ -37,24 +37,24 @@ result = predict_for_date("2024-06-15", model=model, scaler=scaler)
 ```
 inference_pipeline/
 ├── models/
-│   ├── model_final_4_class.keras   # dari artefak.zip, tidak diubah
-│   └── scaler.pkl                  # dari artefak.zip, tidak diubah
+│   ├── model_final_4_class.keras   
+│   └── scaler.pkl                  
 ├── config/
 │   ├── settings.py                 # kontrak (feature order, lookback, class mapping)
-│   └── stage7_monthly_medians.json # dari CHECKPOINT_01, tidak dihitung ulang
+│   └── stage7_monthly_medians.json 
 ├── src/
-│   ├── ogimet.py           # akuisisi + standardisasi Ogimet (Stage 2)
-│   ├── wyoming.py          # akuisisi sounding per-tanggal (downloader logic)
-│   ├── atmospheric_indices.py  # delegasi SounderPy/SHARPpy (tidak diubah algoritmanya)
-│   ├── calendar_utils.py   # master calendar, window D-30..D-1 (Stage 3)
-│   ├── sounding.py         # seleksi 12Z->00Z per nominal_date + hitung indeks (Stage 4/5)
-│   ├── integration.py      # LEFT JOIN backbone->Ogimet->SounderPy (Stage 5)
-│   ├── preprocessing.py    # interpolasi Ogimet + median bulanan SounderPy (Stage 7)
-│   ├── sequence.py         # scaler.transform() + reshape (1,30,8) (Stage 10)
+│   ├── ogimet.py           # get data + standardisasi Ogimet (Stage 2)
+│   ├── wyoming.py          # get data sounding per-tanggal (downloader logic)
+│   ├── atmospheric_indices.py  # indeks atmosfer SounderPy/SHARPpy (tidak diubah algoritmanya)
+│   ├── calendar_utils.py   # master calendar, window D-30..D-1
+│   ├── sounding.py         # seleksi 12Z->00Z per nominal_date + hitung indeks
+│   ├── integration.py      # LEFT JOIN backbone->Ogimet->SounderPy
+│   ├── preprocessing.py    # interpolasi Ogimet + median bulanan SounderPy
+│   ├── sequence.py         # scaler.transform() + reshape (1,30,8)
 │   ├── predictor.py        # load_model(compile=False), predict, argmax, class mapping
 │   └── pipeline.py         # predict_for_date() + validation gate
 ├── tests/
-│   └── test_inference.py   # test murah (tanpa jaringan)
+│   └── test_inference.py   # testing (tanpa jaringan)
 ├── requirements.txt
 └── README.md
 ```
