@@ -1,0 +1,108 @@
+{
+  "_metadata": {
+    "source": "artefak/artefak/stage07/07_missing_value_handling.ipynb, cell index 10 (executed output)",
+    "extraction_method": "Dibaca langsung dari execute_result (DataFrame monthly_median_table) pada cell notebook Stage 7 yang sudah dieksekusi. Bukan hasil hitung ulang oleh proses audit ini.",
+    "computation_rule": "Median dihitung per bulan kalender (1-12), digabung lintas tahun 2017-2024, HANYA dari baris dengan selection_status == 'SELECTED' pada dataset 05_integrated_dataset.csv (hasil Stage 5). Baris NO_SOUNDING tidak berkontribusi pada median dan tidak diisi oleh median ini.",
+    "applies_to_rows_where": "selection_status == 'SELECTED'",
+    "does_not_apply_to": "selection_status == 'NO_SOUNDING' (nilai tetap NaN, sequence yang mengandungnya harus ditolak, bukan diisi median)",
+    "variables_note": "cape disertakan karena merupakan bagian dari SOUNDERPY_VARS pada Stage 7, tetapi CAPE BUKAN salah satu dari 8 fitur model final (lihat INFERENCE_CONTRACT.md). cape disimpan di sini hanya untuk kelengkapan audit/replikasi Stage 7, tidak untuk dipakai membentuk input model."
+  },
+  "monthly_medians": {
+    "1": {
+      "cin": -17.49,
+      "kindex": 34.0,
+      "li": -4.37,
+      "tt": 43.4,
+      "sweat": 210.612,
+      "cape": 1921.012
+    },
+    "2": {
+      "cin": -20.367,
+      "kindex": 35.2,
+      "li": -4.721,
+      "tt": 43.8,
+      "sweat": 211.751,
+      "cape": 1832.978
+    },
+    "3": {
+      "cin": -21.21,
+      "kindex": 34.8,
+      "li": -4.263,
+      "tt": 43.7,
+      "sweat": 212.447,
+      "cape": 1798.672
+    },
+    "4": {
+      "cin": -22.663,
+      "kindex": 35.3,
+      "li": -4.349,
+      "tt": 43.9,
+      "sweat": 219.965,
+      "cape": 1802.594
+    },
+    "5": {
+      "cin": -27.652,
+      "kindex": 34.75,
+      "li": -4.02,
+      "tt": 43.6,
+      "sweat": 222.694,
+      "cape": 1614.864
+    },
+    "6": {
+      "cin": -33.665,
+      "kindex": 34.0,
+      "li": -3.914,
+      "tt": 43.45,
+      "sweat": 204.396,
+      "cape": 1168.509
+    },
+    "7": {
+      "cin": -21.157,
+      "kindex": 32.9,
+      "li": -4.12,
+      "tt": 43.3,
+      "sweat": 205.101,
+      "cape": 1519.458
+    },
+    "8": {
+      "cin": -23.81,
+      "kindex": 33.9,
+      "li": -3.658,
+      "tt": 43.6,
+      "sweat": 208.946,
+      "cape": 1203.952
+    },
+    "9": {
+      "cin": -27.88,
+      "kindex": 33.9,
+      "li": -3.314,
+      "tt": 43.2,
+      "sweat": 207.991,
+      "cape": 1094.522
+    },
+    "10": {
+      "cin": -21.99,
+      "kindex": 34.3,
+      "li": -3.233,
+      "tt": 42.8,
+      "sweat": 212.96,
+      "cape": 1159.758
+    },
+    "11": {
+      "cin": -19.888,
+      "kindex": 34.75,
+      "li": -3.064,
+      "tt": 42.8,
+      "sweat": 218.788,
+      "cape": 1110.66
+    },
+    "12": {
+      "cin": -16.591,
+      "kindex": 34.4,
+      "li": -3.957,
+      "tt": 43.1,
+      "sweat": 214.37,
+      "cape": 1613.537
+    }
+  }
+}

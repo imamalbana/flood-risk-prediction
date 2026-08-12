@@ -1,0 +1,30 @@
+# Python Virtual Environment
+.venv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing & App Cache
+.pytest_cache/
+.cache/
+
+# Large Model weights & scaler objects
+models/*
+!models/.gitkeep
+
+# Exclude original research dataset
+data/integrated/integrated_dataset.csv
+
+# Output inference files / temporary predictions
+inference_features_*.csv
+
+# Temporary diagnostic reports
+reports/cin_diagnostic_*.csv
+
+# Streamlit specifications (design documents)
+STREAMLIT_SPEC.md

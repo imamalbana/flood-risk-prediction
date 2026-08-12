@@ -1,0 +1,14 @@
+# Inference pipeline runtime dependencies (CHECKPOINT 02).
+# TIDAK termasuk: optuna, imblearn (RandomOverSampler) -- dependency
+# Stage 12 training-only, dilarang pada runtime inference
+# (lihat INFERENCE_AUDIT_REPORT.md Bagian 5).
+
+tensorflow>=2.21.0      # Keras 3, format .keras (verifikasi audit: 2.21.0)
+scikit-learn==1.6.1     # versi sama dengan saat scaler.pkl disimpan
+joblib>=1.3
+pandas>=2.0
+numpy>=1.26
+requests>=2.31
+metpy>=1.6
+sounderpy>=3.0          # menyediakan sounderpy.calc + sounderpy.SHARPPYMAIN (SHARPpy internal)
+pytest>=7.4
