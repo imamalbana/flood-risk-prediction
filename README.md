@@ -1,10 +1,3 @@
-# Inference Pipeline — LSTM Flood Risk (Kota Padang)
-
-CHECKPOINT 02. Implementasi inference pipeline Python murni, berdasarkan
-kontrak yang diverifikasi pada CHECKPOINT 01
-(`INFERENCE_CONTRACT.md`, `STAGE_DEPLOYMENT_MAP.md`,
-`INFERENCE_AUDIT_REPORT.md`). Bukan Streamlit, bukan training.
-
 ## Instalasi
 
 ```bash
