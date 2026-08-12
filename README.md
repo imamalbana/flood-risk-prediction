@@ -43,7 +43,7 @@ inference_pipeline/
 │   ├── settings.py                 # kontrak (feature order, lookback, class mapping)
 │   └── stage7_monthly_medians.json 
 ├── src/
-│   ├── ogimet.py           # get data + standardisasi Ogimet (Stage 2)
+│   ├── ogimet.py           # get data + standardisasi Ogimet
 │   ├── wyoming.py          # get data sounding per-tanggal (downloader logic)
 │   ├── atmospheric_indices.py  # indeks atmosfer SounderPy/SHARPpy (tidak diubah algoritmanya)
 │   ├── calendar_utils.py   # master calendar, window D-30..D-1
