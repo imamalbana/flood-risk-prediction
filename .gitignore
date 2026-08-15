@@ -14,11 +14,15 @@ __pycache__/
 .cache/
 
 # Large Model weights & scaler objects
+# model_final_4_class.keras dan scaler.pkl di-track (ukuran < 100MB)
 models/*
 !models/.gitkeep
+!models/model_final_4_class.keras
+!models/scaler.pkl
 
 # Exclude original research dataset
-data/integrated/integrated_dataset.csv
+# integrated_dataset.csv di-track (ukuran < 100MB)
+# data/integrated/integrated_dataset.csv
 
 # Output inference files / temporary predictions
 inference_features_*.csv
