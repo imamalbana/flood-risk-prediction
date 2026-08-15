@@ -112,7 +112,7 @@ section[data-testid="stSidebar"] { display: none !important; }
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.08em;
-    text-transform: uppercase;
+    text-transform: capitalize;
     color: #666;
     text-decoration: none;
     transition: color 0.2s;
@@ -152,6 +152,15 @@ section[data-testid="stSidebar"] { display: none !important; }
     letter-spacing: -0.04em;
     color: #0d0d0d;
     margin-bottom: 32px;
+}
+.prediction-note {
+    margin-top: 5px;
+    padding: 7px 7px;
+    border-left: 2px solid #999;
+    background: #f7f7f5;
+    color: #666;
+    font-size: 0.62rem;
+    line-height: 1.6;
 }
 .hero-title em { font-style: normal; color: #666; }
 .hero-body {
@@ -228,7 +237,7 @@ section[data-testid="stSidebar"] { display: none !important; }
     line-height: 1.75;
     color: #666;
     max-width: 520px;
-    margin-bottom: 48px;
+    margin-bottom: 14px;
 }
 
 /* ── Form Controls ── */
@@ -553,7 +562,7 @@ PIPELINE_STAGES = [
     {"key": "[3/7]", "label": "Menghitung indeks atmosfer"},
     {"key": "[4/7]", "label": "Menggabungkan data"},
     {"key": "[5/7]", "label": "Menyiapkan data untuk prediksi"},
-    {"key": "[6/7]", "label": "Memeriksa kelengkapan data 30 hari"},
+    {"key": "[6/7]", "label": "Memeriksa kelengkapan data 7 hari"},
     {"key": "[7/7]", "label": "Menjalankan model prediksi"},
 ]
 
@@ -710,7 +719,7 @@ st.markdown("""
     <div class="hero-eyebrow">Sistem Prediksi Risiko Banjir Kota Padang</div>
     <h1 class="hero-title">Sistem Penilaian<br><em>Risiko Banjir</em></h1>
     <p class="hero-body">
-        Prakiraan tingkat risiko banjir di Kota Padang untuk tanggal pilihan Anda, berdasarkan data cuaca dan kondisi atmosfer selama 30 hari terakhir.
+        Prakiraan tingkat risiko banjir di Kota Padang untuk tanggal pilihan Anda, berdasarkan data cuaca dan kondisi atmosfer selama 7 hari terakhir.
     </p>
     <a href="#prediksi" class="hero-cta">Mulai Prediksi &nbsp;→</a>
     <div class="hero-stats">
@@ -719,7 +728,7 @@ st.markdown("""
             <div class="hero-stat-lbl">Metode Prediksi</div>
         </div>
         <div class="hero-stat" style="padding-left:32px;">
-            <div class="hero-stat-val">30 Hari</div>
+            <div class="hero-stat-val">7 Hari</div>
             <div class="hero-stat-lbl">Rentang Data yang Digunakan</div>
         </div>
         <div class="hero-stat" style="padding-left:32px;">
@@ -752,7 +761,10 @@ st.markdown("""
     <div class="s-eyebrow">Prediksi</div>
     <div class="s-title">Prediksi Risiko Banjir</div>
     <div class="s-body">
-       Pilih tanggal yang ingin diprediksi. Sistem akan otomatis mengambil data cuaca dan atmosfer 30 hari sebelumnya. Anda tidak perlu mengisi data apa pun secara manual.
+       Pilih tanggal yang ingin diprediksi. Sistem akan otomatis mengambil data cuaca dan atmosfer 7 hari sebelumnya. Anda tidak perlu mengisi data apa pun secara manual.
+    </div>
+    <div class="prediction-note">
+        <strong>Catatan:</strong> Proses prediksi dapat membutuhkan waktu beberapa saat karena sistem perlu mengambil data atmosfer dari server eksternal.
     </div>
 """, unsafe_allow_html=True)
 
@@ -763,7 +775,7 @@ with col_input:
         "Tanggal Prediksi",
         value=None,
         key="date_picker",
-        help="Sistem akan menggunakan data 30 hari sebelum tanggal ini untuk membuat prediksi.",
+        help="Sistem akan menggunakan data 7 hari sebelum tanggal ini untuk membuat prediksi.",
     )
     st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
     submit_disabled = (target_date_widget is None) or st.session_state.running
@@ -951,7 +963,7 @@ if st.session_state.result and not st.session_state.running:
             </div>
             """, unsafe_allow_html=True)
 
-            with st.expander("Lihat Data 30 Hari Terakhir yang Digunakan)"):
+            with st.expander("Lihat Data 7 Hari Terakhir yang Digunakan"):
                 st.dataframe(df_feat, use_container_width=True, hide_index=True)
 
             col_dl, _ = st.columns([1, 3])
@@ -1017,7 +1029,7 @@ st.markdown("""
 <div class="page-section">
 <div class="page-section-inner">
     <div class="s-eyebrow">Tentang</div>
-    <div class="s-title">Metodologi &amp; Sistem</div>
+    <div class="s-title">Metodologi Sistem</div>
     <div class="s-body">
        Sistem ini bekerja melalui tiga tahap utama: pengumpulan dan penggabungan data, pengolahan data hingga menghasilkan prediksi, serta penyajian hasil kepada pengguna melalui halaman yang sedang Anda gunakan ini.
     </div>
@@ -1030,7 +1042,7 @@ st.markdown("""
                 <li>Menghitung indeks atmosfer menggunakan SounderPy dan SHARPpy</li>
                 <li>Menggabungkan seluruh data ke dalam satu susunan harian yang berurutan</li>
                 <li>Membersihkan dan melengkapi data yang kosong menggunakan nilai tengah (median) bulanan</li>
-                <li>Menyusun data 30 hari terakhir dan memeriksa kelayakannya melalui 9 tahap pemeriksaan kualitas data</li>
+                <li>Menyusun data 7 hari terakhir dan memeriksa kelayakannya melalui validation gate</li>
                 <li>Menjalankan model LSTM untuk menentukan kategori risiko banjir yang paling mungkin terjadi</li>
             </ul>
         </div>
@@ -1061,8 +1073,8 @@ st.markdown("""
             <ul class="about-list">
                 <li>Arsitektur: LSTM berlapis (multi-layer), dengan 4 kategori keluaran</li>
                 <li>Kategori hasil prediksi: Rendah · Sedang · Tinggi · Sangat Tinggi</li>
-                <li>Rentang data yang digunakan: 30 hari sebelum tanggal prediksi</li>
-                <li>Normalisasi data: menggunakan StandardScaler, dengan parameter yang dihitung sekali saat pelatihan model dan diterapkan secara konsisten pada setiap prediksi baru.</li>
+                <li>Rentang data yang digunakan: 7 hari sebelum tanggal prediksi</li>
+                <li>Normalisasi data: menggunakan MinMaxScaler, dengan parameter yang dihitung sekali saat pelatihan model dan diterapkan secara konsisten pada setiap prediksi baru.</li>
                 <li>Format penyimpanan model: Keras (.keras)</li>
             </ul>
         </div>

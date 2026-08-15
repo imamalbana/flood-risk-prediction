@@ -48,7 +48,7 @@ FEATURE_COLUMNS = [
 OGIMET_FEATURE_COLUMNS = ["rr", "tavg", "rh"]
 SOUNDING_FEATURE_COLUMNS = ["cin", "kindex", "li", "tt", "sweat"]
 
-LOOKBACK = 30  # D-30 ... D-1, target D tidak termasuk window
+LOOKBACK = 7  # D-7 ... D-1, target D tidak termasuk window
 
 CLASS_NAMES = ["Rendah", "Sedang", "Tinggi", "Sangat Tinggi"]
 
@@ -66,14 +66,13 @@ OGIMET_PLACEHOLDER_MAP = {
 # -----------------------------------------------------------------------
 SRC_ORDER = ["FM35", None]
 HOUR_PRIORITY = [12, 0]  # coba 12Z dulu, fallback 00Z
-
 # -----------------------------------------------------------------------
 # STAGE 7 — missing-value handling (WAJIB direplikasi persis)
 # -----------------------------------------------------------------------
 NO_SOUNDING_STATUS = "NO_SOUNDING"
 SELECTED_STATUS = "SELECTED"
 
-# OPEN DECISION 1 (INFERENCE_CONTRACT.md #10): ukuran buffer sebelum D-30
+# OPEN DECISION 1 (INFERENCE_CONTRACT.md #10): ukuran buffer sebelum D-7
 # untuk interpolate(method="time", limit_direction="both") BELUM diputuskan
 # pada CHECKPOINT 01. Implementasi ini TIDAK mengarang nilai baru — buffer
 # harus disuplai eksplisit oleh caller (lihat src/preprocessing.py) dan

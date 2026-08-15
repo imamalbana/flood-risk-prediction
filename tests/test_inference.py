@@ -74,8 +74,8 @@ def test_feature_columns_order_matches_contract():
     assert FEATURE_COLUMNS == expected
 
 
-def test_lookback_is_30():
-    assert LOOKBACK == 30
+def test_lookback_is_7():
+    assert LOOKBACK == 7
 
 
 def test_class_names_order():
@@ -99,10 +99,10 @@ def test_build_window_dates_excludes_target():
     from src.calendar_utils import build_window_dates
 
     target = pd.Timestamp("2024-06-15")
-    window = build_window_dates(target, 30)
-    assert len(window) == 30
+    window = build_window_dates(target, 7)
+    assert len(window) == 7
     assert window[-1] == target - pd.Timedelta(days=1)
-    assert window[0] == target - pd.Timedelta(days=30)
+    assert window[0] == target - pd.Timedelta(days=7)
     assert target not in window
 
 
@@ -146,9 +146,9 @@ def test_parse_target_date_rejects_garbage():
 def test_build_input_sequence_shape():
     from src.sequence import build_input_sequence
 
-    dummy = np.zeros((30, 8))
-    reshaped = build_input_sequence(dummy, lookback=30)
-    assert reshaped.shape == (1, 30, 8)
+    dummy = np.zeros((7, 8))
+    reshaped = build_input_sequence(dummy, lookback=7)
+    assert reshaped.shape == (1, 7, 8)
 
 
 def test_build_input_sequence_rejects_wrong_lookback():
@@ -156,7 +156,7 @@ def test_build_input_sequence_rejects_wrong_lookback():
 
     dummy = np.zeros((10, 8))
     with pytest.raises(ValueError):
-        build_input_sequence(dummy, lookback=30)
+        build_input_sequence(dummy, lookback=7)
 
 
 def test_extract_feature_matrix_raises_on_missing_date():
@@ -180,9 +180,9 @@ def test_validation_gate_rejects_nan_features():
     from src.predictor import load_scaler
 
     scaler = load_scaler(SCALER_PATH)
-    window_dates = pd.date_range("2024-01-01", periods=30).tolist()
+    window_dates = pd.date_range("2024-01-01", periods=7).tolist()
     matrix = pd.DataFrame(
-        np.random.rand(30, len(FEATURE_COLUMNS)),
+        np.random.rand(7, len(FEATURE_COLUMNS)),
         index=window_dates,
         columns=FEATURE_COLUMNS,
     )
@@ -198,9 +198,9 @@ def test_validation_gate_passes_clean_matrix():
     from src.predictor import load_scaler
 
     scaler = load_scaler(SCALER_PATH)
-    window_dates = pd.date_range("2024-01-01", periods=30).tolist()
+    window_dates = pd.date_range("2024-01-01", periods=7).tolist()
     matrix = pd.DataFrame(
-        np.random.rand(30, len(FEATURE_COLUMNS)),
+        np.random.rand(7, len(FEATURE_COLUMNS)),
         index=window_dates,
         columns=FEATURE_COLUMNS,
     )
@@ -337,7 +337,7 @@ def test_get_sounding_rows_for_dates_passes_use_cache(tmp_path, monkeypatch):
     df1 = sounding_mod.get_sounding_rows_for_dates(dates, use_cache=True)
     calls_after_first_window = call_count["n"]
 
-    # Panggil lagi untuk tanggal yang SAMA (mensimulasikan window LB30
+    # Panggil lagi untuk tanggal yang SAMA (mensimulasikan window LB7
     # berikutnya yang tumpang tindih) -- tidak boleh menambah panggilan HTTP.
     df2 = sounding_mod.get_sounding_rows_for_dates(dates, use_cache=True)
     assert call_count["n"] == calls_after_first_window

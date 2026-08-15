@@ -4,7 +4,7 @@ Orkestrasi inference end-to-end: `predict_for_date(target_date)`.
 Alur (INFERENCE_CONTRACT.md Bagian 7, WAJIB urutan ini):
 
     target
-    -> acquisition/cache (Ogimet + Wyoming/SounderPy untuk window D-30..D-1)
+    -> acquisition/cache (Ogimet + Wyoming/SounderPy untuk window D-7..D-1)
     -> standardisasi (placeholder Stage 2, dilakukan di dalam src/ogimet.py)
     -> date alignment (master calendar, src/calendar_utils.py)
     -> seleksi sounding harian per tanggal (src/sounding.py)
@@ -15,7 +15,7 @@ Alur (INFERENCE_CONTRACT.md Bagian 7, WAJIB urutan ini):
     -> validation gate (WAJIB lulus sebelum predict, lihat di bawah)
     -> ambil 8 fitur (src/sequence.py)
     -> scaler.transform() (src/sequence.py, TIDAK fit)
-    -> reshape (1, 30, 8) (src/sequence.py)
+    -> reshape (1, 7, 8) (src/sequence.py)
     -> model.predict() (src/predictor.py) -> argmax -> class mapping
 
 VALIDATION GATE (INFERENCE_CONTRACT.md Bagian 8, WAJIB LULUS SEBELUM
@@ -54,11 +54,11 @@ class ValidationGateError(Exception):
 def _run_validation_gate(
     window_dates: list[pd.Timestamp], feature_matrix: pd.DataFrame, scaler
 ) -> list[str]:
-    """Jalankan seluruh 9 pemeriksaan INFERENCE_CONTRACT.md Bagian 8.
+    """Jalankan pemeriksaan kelayakan/validation gate INFERENCE_CONTRACT.md Bagian 8.
     Mengembalikan daftar alasan kegagalan (list kosong = lulus)."""
     reasons: list[str] = []
 
-    # [ ] seluruh 30 tanggal D-30..D-1 tersedia (sudah dijamin oleh
+    # [ ] seluruh 7 tanggal D-7..D-1 tersedia (sudah dijamin oleh
     #     extract_feature_matrix yang melempar KeyError -- ditangani di
     #     caller sebelum fungsi ini dipanggil), di sini kita cek ulang
     #     jumlah baris.
@@ -86,7 +86,7 @@ def _run_validation_gate(
     if non_numeric:
         reasons.append(f"Kolom fitur bukan numerik: {non_numeric}")
 
-    # [ ] tidak ada NaN pada array (30, 8) setelah seluruh preprocessing
+    # [ ] tidak ada NaN pada array (7, 8) setelah seluruh preprocessing
     nan_mask = feature_matrix[FEATURE_COLUMNS].isna()
     if nan_mask.to_numpy().any():
         nan_dates = feature_matrix.index[nan_mask.any(axis=1)]
@@ -136,7 +136,7 @@ def predict_for_date(
         untuk pemanggilan berulang).
     monthly_medians : dict median bulanan Stage 7 (opsional, dimuat
         otomatis dari config/stage7_monthly_medians.json jika None).
-    integration_start_buffer_days : jumlah hari tambahan SEBELUM D-30 yang
+    integration_start_buffer_days : jumlah hari tambahan SEBELUM D-7 yang
         ikut diambil untuk keperluan interpolasi Ogimet. Default 0 (tidak
         ada buffer) karena ukuran buffer yang "benar" adalah OPEN DECISION 1
         yang BELUM diputuskan (lihat INFERENCE_CONTRACT.md Bagian 10) --
@@ -261,7 +261,7 @@ def predict_for_date(
         print(f"\nTotal runtime: {total_elapsed:.2f}s")
         raise exc
 
-    # [6/7] LB30 sequence
+    # [6/7] LB7 sequence
     t0 = time.perf_counter()
     try:
         feature_matrix = extract_feature_matrix(preprocessed, window_dates)
@@ -271,13 +271,13 @@ def predict_for_date(
         scaled = scale_features(feature_matrix, scaler)
         X_input = build_input_sequence(scaled, LOOKBACK)
         elapsed = time.perf_counter() - t0
-        print(f"[6/7] LB30 sequence ................... OK ({elapsed:.2f}s)")
+        print(f"[6/7] LB7 sequence .................... OK ({elapsed:.2f}s)")
         print(f"      shape={X_input.shape}")
     except Exception as exc:
         elapsed = time.perf_counter() - t0
-        print(f"[6/7] LB30 sequence ................... FAILED ({elapsed:.2f}s)")
+        print(f"[6/7] LB7 sequence .................... FAILED ({elapsed:.2f}s)")
         print(f"      {type(exc).__name__}: {exc}")
-        print("\nPipeline stopped at: LB30 sequence")
+        print("\nPipeline stopped at: LB7 sequence")
         total_elapsed = time.perf_counter() - total_start
         print(f"\nTotal runtime: {total_elapsed:.2f}s")
         if isinstance(exc, ValidationGateError):

@@ -1,5 +1,5 @@
 """
-Pembentukan sequence D-30..D-1 -> (1, 30, 8) dan scaler.transform().
+Pembentukan sequence D-7..D-1 -> (1, 7, 8) dan scaler.transform().
 
 Direplikasi dari bagian Stage 10 yang dibawa ke deployment (lihat
 STAGE_DEPLOYMENT_MAP.md baris Stage 10): HANYA scaling (`scaler.transform`)

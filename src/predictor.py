@@ -15,7 +15,7 @@ from __future__ import annotations
 import joblib
 import numpy as np
 
-from config.settings import CLASS_NAMES, MODEL_PATH, SCALER_PATH
+from config.settings import CLASS_NAMES, MODEL_PATH, SCALER_PATH, LOOKBACK, FEATURE_COLUMNS
 
 
 def load_model(path: str = MODEL_PATH):
@@ -30,11 +30,12 @@ def load_scaler(path: str = SCALER_PATH):
 
 
 def predict(model, X_input: np.ndarray) -> dict:
-    """Jalankan model.predict() pada X_input shape (1, 30, 8), argmax,
+    """Jalankan model.predict() pada X_input shape (1, 7, 8), argmax,
     dan class mapping. TIDAK memanggil model.fit() atau melatih ulang
     apa pun."""
-    if X_input.shape != (1, 30, 8):
-        raise ValueError(f"Shape input harus (1, 30, 8), diterima {X_input.shape}")
+    expected_shape = (1, LOOKBACK, len(FEATURE_COLUMNS))
+    if X_input.shape != expected_shape:
+        raise ValueError(f"Shape input harus {expected_shape}, diterima {X_input.shape}")
 
     proba = model.predict(X_input, verbose=0)
     pred_class = int(np.argmax(proba, axis=1)[0])
