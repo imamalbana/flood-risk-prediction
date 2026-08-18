@@ -13,3 +13,4 @@ metpy>=1.6
 sounderpy>=3.0          # menyediakan sounderpy.calc + sounderpy.SHARPPYMAIN (SHARPpy internal)
 pytest>=7.4
 lxml>=4.9
+html5lib>=1.1
